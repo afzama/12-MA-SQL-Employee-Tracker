@@ -44,7 +44,7 @@ const init = () => {
         Name: "task"
     }]).then(ans => {
         if (ans.task === "View all departments") {
-            Connection.query('SELECT * FROM department', (err, results) => {
+            Connection.query('SELECT * FROM employee_department', (err, results) => {
                 console.log(err);
                 console.table(results);
                 init()
