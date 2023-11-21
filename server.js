@@ -78,6 +78,12 @@ const init = () => {
             });
         } else if (ans.task === "Add a role") {
             addRole();
+            // Modify init function to include "Add an employee" option
+        } else if (ans.task === "Add an employee") {
+            addEmployee();
+            // Modify init function to include "Update an employee role" option
+        } else if (ans.task === "Update an employee role") {
+            updateEmployeeRole();
         } else if (ans.task === "Exit") {
             console.log("Exiting...");
             process.exit();
@@ -88,7 +94,7 @@ const init = () => {
         }
     });
 };
-//get deparment ID based on name
+//get department ID based on name
 const getDepartmentId = async (departmentName) => {
     return new Promise((resolve, reject) => {
         db.query('SELECT id FROM employee_department WHERE department_name = ?', [departmentName], (err, results) => {
@@ -192,6 +198,97 @@ const getDepartmentChoices = async () => {
         });
     });
 };
+
+// Function to add an employee to the database
+const addEmployee = async () => {
+    try {
+        const employeeAnswer = await inquirer.prompt([
+            {
+                type: "input",
+                message: "Enter the employee's first name:",
+                name: "firstName",
+            },
+            {
+                type: "input",
+                message: "Enter the employee's last name:",
+                name: "lastName",
+            },
+            {
+                type: "list",
+                message: "Select the employee's role:",
+                name: "role",
+                choices: await getRoleChoices(), // Fetch role choices
+            },
+        ]);
+
+        // Use the information to insert a new employee record
+        await insertEmployee(employeeAnswer.firstName, employeeAnswer.lastName, employeeAnswer.role);
+
+        console.log(`Employee ${employeeAnswer.firstName} ${employeeAnswer.lastName} added successfully!`);
+    } catch (error) {
+        console.log(error);
+    } finally {
+        // Initiate the inquirer prompts again
+        init();
+    }
+};
+
+// Function to insert a new employee
+const insertEmployee = async (firstName, lastName, roleId) => {
+    return new Promise((resolve, reject) => {
+        db.query('INSERT INTO employee (first_name, last_name, role_id) VALUES (?, ?, ?)', [firstName, lastName, roleId], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+// Function to update an employee's role in the database
+const updateEmployeeRole = async () => {
+    try {
+        const employeeUpdateAnswer = await inquirer.prompt([
+            {
+                type: "input",
+                message: "Enter the ID of the employee you want to update:",
+                name: "employeeId",
+            },
+            {
+                type: "list",
+                message: "Select the employee's new role:",
+                name: "newRole",
+                choices: await getRoleChoices(), // Fetch role choices
+            },
+        ]);
+
+        // Use the information to update the employee's role
+        await updateEmployee(employeeUpdateAnswer.employeeId, employeeUpdateAnswer.newRole);
+
+        console.log(`Employee role updated successfully!`);
+    } catch (error) {
+        console.log(error);
+    } finally {
+        // Initiate the inquirer prompts again
+        init();
+    }
+};
+
+// Function to update an employee's role
+const updateEmployee = async (employeeId, roleId) => {
+    return new Promise((resolve, reject) => {
+        db.query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+
 
 // Start the application
 startApp();
