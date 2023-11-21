@@ -51,7 +51,7 @@ const init = () => {
                 init()
             });
         } else if (ans.task === "View all employees") {
-            db.query('SELECT * FROM employee_names', (err, results) => {
+            db.query('SELECT * FROM employee', (err, results) => {
                 console.log(err);
                 console.table(results);
                 // After displaying the role data, initiate the inquirer prompts again
@@ -234,13 +234,33 @@ const addEmployee = async () => {
 };
 
 // Function to insert a new employee
-const insertEmployee = async (firstName, lastName, roleId) => {
+const insertEmployee = async (firstName, lastName, roleName) => {
+    try {
+        const roleId = await getRoleId(roleName);
+        const result = await new Promise((resolve, reject) => {
+            db.query('INSERT INTO employee (first_name, last_name, employee_role_id) VALUES (?, ?, ?)', [firstName, lastName, roleId], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Function to get role ID based on role name
+const getRoleId = async (roleName) => {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO employee (first_name, last_name, role_id) VALUES (?, ?, ?)', [firstName, lastName, roleId], (err, result) => {
+        db.query('SELECT id FROM employee_role WHERE title = ?', [roleName], (err, results) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(result);
+                resolve(results[0].id);
             }
         });
     });
@@ -278,7 +298,7 @@ const updateEmployeeRole = async () => {
 // Function to update an employee's role
 const updateEmployee = async (employeeId, roleId) => {
     return new Promise((resolve, reject) => {
-        db.query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId], (err, result) => {
+        db.query('UPDATE employee SET employee_role_id = ? WHERE id = ?', [roleId, employeeId], (err, result) => {
             if (err) {
                 reject(err);
             } else {

@@ -18,7 +18,7 @@ VALUES  ("Account Manager",60000, 1),
         ("Digital Marketing Analyst",85000, 7),
         ("Corporate Analyst",70000, 8);
 
-INSERT INTO employee_names (first_name,last_name,role_id,manager_id)
+INSERT INTO employee (first_name,last_name,employee_role_id,manager_id)
 VALUES  ("John", "Huckle",1,NULL),
         ("Matt", "Townes",2, 1),
         ("Ava", "Grunge",3, 2),
