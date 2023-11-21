@@ -296,16 +296,26 @@ const updateEmployeeRole = async () => {
 };
 
 // Function to update an employee's role
-const updateEmployee = async (employeeId, roleId) => {
-    return new Promise((resolve, reject) => {
-        db.query('UPDATE employee SET employee_role_id = ? WHERE id = ?', [roleId, employeeId], (err, result) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
-            }
+const updateEmployee = async (employeeId, newRole) => {
+    try {
+        // Get the role ID based on the role name
+        const roleId = await getRoleId(newRole);
+
+        // Update the employee's role with the correct role ID
+        const result = await new Promise((resolve, reject) => {
+            db.query('UPDATE employee SET employee_role_id = ? WHERE id = ?', [roleId, employeeId], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
         });
-    });
+
+        return result;
+    } catch (error) {
+        throw error;
+    }
 };
 
 // Function to get role choices for inquirer prompt

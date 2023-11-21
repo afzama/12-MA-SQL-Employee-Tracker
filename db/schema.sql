@@ -23,7 +23,7 @@ CREATE TABLE employee (
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     is_manager BOOLEAN,
-    employee_role_id VARCHAR(30) NOT NULL,
+    employee_role_id INT NOT NULL,
     manager_id INT,
     FOREIGN KEY (employee_role_id)
     REFERENCES employee_role(id)
