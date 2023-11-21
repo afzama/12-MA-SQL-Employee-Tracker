@@ -288,6 +288,18 @@ const updateEmployee = async (employeeId, roleId) => {
     });
 };
 
+// Function to get role choices for inquirer prompt
+const getRoleChoices = async () => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT title FROM employee_role', (err, roles) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(roles.map(role => role.title));
+            }
+        });
+    });
+};
 
 
 // Start the application
