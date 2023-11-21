@@ -20,10 +20,10 @@ VALUES  ("Account Manager",60000, 1),
 
 INSERT INTO employee_names (first_name,last_name,role_id,manager_id)
 VALUES  ("John", "Huckle",1,NULL),
-        ("Matt", "Townes",2, 22),
-        ("Ava", "Grunge",3, 54),
-        ("Julie", "Smith",4, 72),
-        ("Ganesh", "Jayvareen",5, 17),
-        ("Xinwen", "Su",6, 7),
-        ("Susan", "Karp",7, 43),
-        ("Alex", "Sanchez",8, 60);
+        ("Matt", "Townes",2, 1),
+        ("Ava", "Grunge",3, 2),
+        ("Julie", "Smith",4, 3),
+        ("Ganesh", "Jayvareen",5, 4),
+        ("Xinwen", "Su",6, 1),
+        ("Susan", "Karp",7, 2),
+        ("Alex", "Sanchez",8, 3);

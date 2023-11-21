@@ -88,15 +88,64 @@ const init = () => {
         }
     });
 };
+//get deparment ID based on name
+const getDepartmentId = async (departmentName) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT id FROM employee_department WHERE department_name = ?', [departmentName], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results[0].id);
+            }
+        });
+    });
+};
 
 // Function to add a role to the database
-const addRole = async (roleName, roleSalary, departmentName) => {
+const addRole = async () => {
     try {
-        // Fetch the department ID based on the selected department name
-        const departmentId = await getDepartmentId(departmentName);
-        // Add the new role to the database
-        await insertRole(roleName, roleSalary, departmentId);
-        console.log(`Role ${roleName} added successfully!`);
+        const roleAnswer = await inquirer.prompt([
+            {
+                type: "input",
+                message: "What is the name of the role?",
+                name: "roleName",
+            },
+            {
+                type: "input",
+                message: "What is the salary of the role?",
+                name: "roleSalary",
+            },
+            {
+                type: "list",
+                message: "Which department does the role belong to?",
+                name: "roleDepartment",
+                choices: await getDepartmentChoices(), // Fetch department choices
+            },
+        ]);
+
+        if (roleAnswer.roleDepartment === "Add new department") {
+            const newDepartmentAnswer = await inquirer.prompt([
+                {
+                    type: "input",
+                    message: "Enter the name of the new department:",
+                    name: "newDepartmentName",
+                },
+            ]);
+
+            // Add the new department to the database
+            const departmentId = await insertDepartment(newDepartmentAnswer.newDepartmentName);
+
+            // Add the new role to the database
+            await insertRole(roleAnswer.roleName, roleAnswer.roleSalary, departmentId);
+        } else {
+            // Use existing department
+            const departmentId = await getDepartmentId(roleAnswer.roleDepartment);
+
+            // Add the new role to the database
+            await insertRole(roleAnswer.roleName, roleAnswer.roleSalary, departmentId);
+        }
+
+        console.log(`Role ${roleAnswer.roleName} added successfully!`);
     } catch (error) {
         console.log(error);
     } finally {
@@ -105,6 +154,44 @@ const addRole = async (roleName, roleSalary, departmentName) => {
     }
 };
 
+// Function to insert a new department and return its ID
+const insertDepartment = async (departmentName) => {
+    return new Promise((resolve, reject) => {
+        db.query('INSERT INTO employee_department (department_name) VALUES (?)', [departmentName], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result.insertId);
+            }
+        });
+    });
+};
+
+// Function to insert a new role
+const insertRole = async (roleName, roleSalary, departmentId) => {
+    return new Promise((resolve, reject) => {
+        db.query('INSERT INTO employee_role (title, salary, department_id) VALUES (?, ?, ?)', [roleName, roleSalary, departmentId], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+// Function to get department choices for inquirer prompt
+const getDepartmentChoices = async () => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT department_name FROM employee_department', (err, departments) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(departments.map(department => department.department_name).concat("Add new department"));
+            }
+        });
+    });
+};
 
 // Start the application
 startApp();
