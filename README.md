@@ -5,7 +5,10 @@ I WANT to access a command-line application to manage a company's employee datab
 SO THAT I can view and manage the departments, roles, and employees in my company.
 
 ## Code Description
-This repository contains SQL and Javascript to run the command-line application.
+This repository contains:
+- MySQL package connect to MySQL database and perform queries,
+- Inquirer package to interacty with the user via command line,
+- Javascript to run the command-line application.
 
 ## MA-SQL-Employee-Tracker Application Screenshots
 ![alt text](./public/1%20View%20dpt%20&%20roles.jpeg)
@@ -18,3 +21,4 @@ This repository contains SQL and Javascript to run the command-line application.
 https://github.com/afzama/MA-Note-Taker 
 
 ## Application Recording
+![Application Recording](<../../../Downloads/MA-SQL-Employee-Tracker Recording.webm>)
