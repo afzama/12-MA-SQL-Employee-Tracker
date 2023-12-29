@@ -21,4 +21,4 @@ This repository contains:
 https://github.com/afzama/MA-Note-Taker 
 
 ## Application Recording
-![Application Recording](<../../../Downloads/MA-SQL-Employee-Tracker Recording.webm>)
+![Application Recording](https://watch.screencastify.com/v/6uD5ThyolUgTLIMrwZzH)
