@@ -18,7 +18,7 @@ This repository contains:
 ![alt text](./public/5%20Update%20Employee.jpeg)
 
 ### Github Repository URL
-https://github.com/afzama/MA-Note-Taker 
+https://github.com/afzama/12-MA-SQL-Employee-Tracker/tree/main
 
 ## Application Recording
 ![Application Recording](https://watch.screencastify.com/v/6uD5ThyolUgTLIMrwZzH)
