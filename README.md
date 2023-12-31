@@ -21,4 +21,4 @@ This repository contains:
 https://github.com/afzama/12-MA-SQL-Employee-Tracker/tree/main
 
 ## Application Recording
-![Application Recording](https://watch.screencastify.com/v/6uD5ThyolUgTLIMrwZzH)
+![Application Recording](https://watch.screencastify.com/v/UutfRxwCXL7TCfS0uynH)
